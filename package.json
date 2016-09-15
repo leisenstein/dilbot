@@ -1,0 +1,30 @@
+{
+  "name": "dilbot",
+  "version": "1.0.0",
+  "description": "Bot that takes a word and returns an appropriate Dilbert comic",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leisenstein/dilbot.git"
+  },
+  "keywords": [
+    "dilbert",
+    "node",
+    "nodejs",
+    "chatbot",
+    "slack"
+  ],
+  "author": "Larry Eisenstein",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/leisenstein/dilbot/issues"
+  },
+  "homepage": "https://github.com/leisenstein/dilbot#readme",
+  "dependencies": {
+    "express": "^4.14.0"
+  }
+}
