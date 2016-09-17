@@ -8,12 +8,24 @@ var moment = require('moment');
 var app = express();
 var services = require('./app/Services');
 
+var _ = require('underscore');
 
-app.get('/scrape', function(req, res) {
+
+
+
+app.get('/dilbot', function(req, res) {
     services.getToday('fakefile.jpg'
                         , function(comicImg) { 
                             res.send('<img src="' + comicImg + '"/>');
                         });
+});
+
+app.get('/dilbot/:term', function(req, res) {
+    services.getRandomByTopic(req.params.term, 'fake2.jpg', function(comicImg) {
+        console.log('##########Back from Random Image ##############');
+        console.log(comicImg);
+        res.send('<img src="' + comicImg + '"/>');
+    });
 });
 
 
