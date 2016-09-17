@@ -28,7 +28,6 @@ Services.getToday = function(filename, callback) {
             console.log("There is an ERROR in the request (getToday)!");
             console.log(error);
         } else {
-            console.log("Its all good: " + response.statusCode);
             $ = cheerio.load(html);
             
             var wrapped = moment(new Date());

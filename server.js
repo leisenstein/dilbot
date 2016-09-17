@@ -1,4 +1,4 @@
-var PORT = 8081;
+var PORT = process.env.PORT||8081;
 var express = require('express');
 var fs = require('fs');
 var http = require('http');
@@ -22,7 +22,6 @@ app.get('/dilbot', function(req, res) {
 
 app.get('/dilbot/:term', function(req, res) {
     services.getRandomByTopic(req.params.term, 'fake2.jpg', function(comicImg) {
-        console.log('##########Back from Random Image ##############');
         console.log(comicImg);
         res.send('<img src="' + comicImg + '"/>');
     });
