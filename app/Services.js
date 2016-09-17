@@ -78,7 +78,6 @@ Services.getRandomByTopic = function(term, filename, callback) {
                    var imgRandomComic = $('div.img-comic-container img.img-comic')[random-1];
                    var todaysComicImg = $('img.img-comic').attr('src');
                    var todaysComicAlt = $('img.img-comic').attr('alt');
-                   console.log('Final ::::::::: ' + todaysComicImg + ' [' + todaysComicAlt +']');
                    callback(todaysComicImg);
                }
            
