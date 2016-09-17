@@ -10,9 +10,6 @@ var services = require('./app/Services');
 
 var _ = require('underscore');
 
-
-
-
 app.get('/dilbot', function(req, res) {
     services.getToday('fakefile.jpg'
                         , function(comicImg) { 
@@ -21,13 +18,15 @@ app.get('/dilbot', function(req, res) {
 });
 
 app.get('/dilbot/:term', function(req, res) {
-    services.getRandomByTopic(req.params.term, 'fake2.jpg', function(comicImg) {
-        console.log(comicImg);
-        res.send('<img src="' + comicImg + '"/>');
-    });
+    // services.getRandomByTopic(req.params.term, 'fake2.jpg', function(comicImg) {
+        // console.log(comicImg);
+        // res.send('<img src="' + comicImg + '"/>');
+    // });
+    services.getToday('fakefile.jpg'
+                        , function(comicImg) { 
+                            res.send('<img src="' + comicImg + '"/>');
+                        });
 });
-
-
 app.listen(PORT);
 console.log('Welcome to Dilbot 0.1');
 exports = module.exports = app;
