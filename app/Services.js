@@ -74,8 +74,9 @@ Services.getRandomByTopic = function(term, filename, callback) {
                    var numberOfComics = $('div.img-comic-container').length;
                    
                    
-                   random = require("random-js")(1, numberOfComics);
-                   console.log('Picked Comic #: ' + random + ' of ' + numberOfComics + '!');
+                   random = require("random-js")();
+                   var randomComic = random.integer(1, numberOfComics);
+                   console.log('Picked Comic #: ' + randomComic + ' of ' + numberOfComics + '!');
                    var imgRandomComic = $('div.img-comic-container img.img-comic')[random-1];
                    var todaysComicImg = $('img.img-comic').attr('src');
                    var todaysComicAlt = $('img.img-comic').attr('alt');
