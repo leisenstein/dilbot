@@ -52,15 +52,20 @@ Services.getRandomByTopic = function(term, filename, callback) {
            console.log(error);
        } else {
            $ = cheerio.load(html);
-           // $('div.no-results').length > 0
            
-           var quickCount = parseInt($('ul.pagination li.next').prev().text());
-           console.log('Number of Pages: ' + quickCount);
+           // MUST account for No Results
+           var noResults = $('div.no-results').length > 0
+           if(noResults) {
+               callback('http://funny-pictures.funmunch.com/pictures/Soccer-Fail-2.jpg');
+               return;
+           }
+               
            
+           var numOfPages = parseInt($('ul.pagination li.next').prev().text());
            var random = require("random-js")();
-           var randomPage = random.integer(1, quickCount);
-           console.log('Random page num:  ' + randomPage);
-           // Load the random page
+           var randomPage = random.integer(1, numOfPages);
+           console.log('Picked Random page #: ' + randomPage + ' of ' + numOfPages + '!');
+
            searchUrl = `${Services.BaseDilbertSearchURL}${term}&page=${randomPage}`;
            console.log('Now Searching: ' + searchUrl);
            request(searchUrl, function(err, resp, body) {
@@ -105,11 +110,6 @@ Services.getRandomByTopic = function(term, filename, callback) {
 
 
 
-
-
-
-
-
 //////////////////////////////////
 ///////// TEST ///////////////////
 //////////////////////////////////
@@ -125,15 +125,6 @@ Services.getComicFromHtml = function(html, n) {
 //////////////////////////////////
 ///////// TEST ///////////////////
 //////////////////////////////////
-
-
-
-
-
-
-
-
-
 
 
 module.exports = Services;
