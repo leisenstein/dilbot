@@ -7,9 +7,7 @@ var cheerio = require('cheerio');
 var moment = require('moment');
 var app = express();
 var services = require('./app/Services');
-
 var _ = require('underscore');
-app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: false })); 
 
 
@@ -37,15 +35,30 @@ app.get('/dilbot/:term', function(req, res) {
 
 app.post('/dilbot', function(req, res) {
     // parameters from Slack
+    console.log("POST TO DILBOT!");
+    
+    
+    
     var term = req.body.text;
+    console.log(term);
     var token = req.body.token;
+    console.log(token);
     var teamId=req.body.team_id;
+    console.log(teamId);
     var teamDomain=req.body.team_domain;
+    console.log(teamDomain);
     var channelId=req.body.channel_id;
+    console.log(channelId);
     var channelName=req.body.channel_name;
+    console.log(channelName);
     var userId=req.body.user_id;
+    console.log(userId);
     var userName=req.body.user_name;
+    console.log(userName);
     var command=req.body.command;
+    console.log(command);
+    
+    
     console.log('--------------------------------------------------------------------------------------------');
     if(command=="dilbot") {
         if(term) {
