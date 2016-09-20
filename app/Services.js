@@ -23,6 +23,7 @@ Services.download = function(uri, filename, callback) {
 /////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////
 Services.getToday = function(filename, callback) {
+    console.log("Inside::: Services.getToday");
     request(Services.BaseDilbertURL, function(error, response, html) {
         if(error) {
             console.log("There is an ERROR in the request (getToday)!");
@@ -44,6 +45,7 @@ Services.getToday = function(filename, callback) {
 /////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////
 Services.getRandomByTopic = function(term, filename, callback) {
+    console.log("Inside::: Services.getRandomByTopic");
     var searchUrl = `${Services.BaseDilbertSearchURL}${term}`;
     console.log(searchUrl);
     request(searchUrl, function(error, response, html) {

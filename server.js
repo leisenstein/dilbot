@@ -62,11 +62,13 @@ app.post('/dilbot', function(req, res) {
     console.log('--------------------------------------------------------------------------------------------');
     if(command=="dilbot") {
         if(term) {
+            console.log("TERm");
             services.getRandomByTopic(term, 'fake2.jpg', function(comicImg) {
                 console.log(comicImg);
                 res.send('' + comicImg + '');
             });            
         } else {
+            console.log("!TERM");
             services.getToday('fakefile.jpg', function(comicImg) { 
                 res.send('' + comicImg + '');
             });            
