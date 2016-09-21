@@ -61,8 +61,9 @@ app.post('/dilbot', function(req, res) {
     
     console.log('--------------------------------------------------------------------------------------------');
     if(command=="dilbot") {
+        console.log("command==dilbot");
         if(term) {
-            console.log("TERm");
+            console.log("TERM");
             res.send("TERM");
             // services.getRandomByTopic(term, 'fake2.jpg', function(comicImg) {
                 // console.log(comicImg);
@@ -75,6 +76,9 @@ app.post('/dilbot', function(req, res) {
                 // res.send('' + comicImg + '');
             // });            
         }
+    } else {
+        console.log("!COMMAND");
+        res.send("!COMMAND");
     }
         
     
