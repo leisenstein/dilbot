@@ -10,8 +10,6 @@ var services = require('./app/Services');
 var _ = require('underscore');
 app.use(bodyParser.urlencoded({ extended: false })); 
 
-
-
 app.get('/', function(req, res) {
     console.log("Index.html");
     res.send("OK!");
@@ -36,8 +34,6 @@ app.get('/dilbot/:term', function(req, res) {
 app.post('/dilbot', function(req, res) {
     // parameters from Slack
     console.log("POST TO DILBOT!");
-    
-    
     
     var term = req.body.text;
     console.log(term);
@@ -68,23 +64,23 @@ app.post('/dilbot', function(req, res) {
             services.getRandomByTopic(term, 'fake2.jpg', function(comicImg) {
                 console.log(comicImg);
                 res.send('' + comicImg + '');
+                return;
             });            
         } else {
             console.log("!TERM");
             res.send("!TERM");
             services.getToday('fakefile.jpg', function(comicImg) { 
                 res.send('' + comicImg + '');
+                return;
             });            
         }
     } else {
         console.log("!COMMAND");
         res.send("!COMMAND");
+        return;
     }
-        
     
 });
-
-
 
 app.listen(PORT);
 console.log('Welcome to Dilbot 0.1');
