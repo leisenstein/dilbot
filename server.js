@@ -72,9 +72,9 @@ app.post('/dilbot', function(req, res) {
         } else {
             console.log("!TERM");
             res.send("!TERM");
-            // services.getToday('fakefile.jpg', function(comicImg) { 
-                // res.send('' + comicImg + '');
-            // });            
+            services.getToday('fakefile.jpg', function(comicImg) { 
+                res.send('' + comicImg + '');
+            });            
         }
     } else {
         console.log("!COMMAND");
