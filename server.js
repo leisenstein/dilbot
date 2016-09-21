@@ -65,10 +65,10 @@ app.post('/dilbot', function(req, res) {
         if(term) {
             console.log("TERM");
             res.send("TERM");
-            // services.getRandomByTopic(term, 'fake2.jpg', function(comicImg) {
-                // console.log(comicImg);
-                // res.send('' + comicImg + '');
-            // });            
+            services.getRandomByTopic(term, 'fake2.jpg', function(comicImg) {
+                console.log(comicImg);
+                res.send('' + comicImg + '');
+            });            
         } else {
             console.log("!TERM");
             res.send("!TERM");
