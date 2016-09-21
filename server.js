@@ -62,15 +62,13 @@ app.post('/dilbot', function(req, res) {
             console.log("TERM");
             services.getRandomByTopic(term, 'fake2.jpg', function(comicImg) {
                 console.log(comicImg);
-                var encodedComicImg = encodeURIComponent(comicImg);
-                res.send(encodedComicImg);
+                res.send('' + comicImg + '');
                 return;
             });            
         } else {
             console.log("!TERM");
             services.getToday('fakefile.jpg', function(comicImg) { 
-                var encodedComicImg = encodeURIComponent(comicImg);
-                res.send(encodedComicImg);
+                res.send(comicImg);
                 return;
             });            
         }
