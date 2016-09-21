@@ -60,7 +60,7 @@ app.post('/dilbot', function(req, res) {
     
     
     console.log('--------------------------------------------------------------------------------------------');
-    if(command=="dilbot") {
+    if(command=="/dilbot") {
         console.log("command==dilbot");
         if(term) {
             console.log("TERM");
