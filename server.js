@@ -8,6 +8,8 @@ var moment = require('moment');
 var app = express();
 var services = require('./app/Services');
 var _ = require('underscore');
+var Slack = require('node-slack');
+
 app.use(bodyParser.urlencoded({ extended: false })); 
 
 app.get('/', function(req, res) {
@@ -67,8 +69,31 @@ app.post('/dilbot', function(req, res) {
             });            
         } else {
             console.log("!TERM");
+            var config = {
+                hook: 'https://hooks.slack.com/services/'+token,
+                channel: channelName,
+            };
+            var slack = new Slack(config.hook);
+            
             services.getToday('fakefile.jpg', function(comicImg) { 
-                res.send(comicImg);
+            
+                // res.append('Content-type','application/json');
+                // res.attachment(comicImg);
+                // res.send(comicImg);
+                slack.send({
+                    text: comicImg,
+                    unfurl_links: true,
+                    unfurl_media: true,
+                    "attachments": [
+                        {
+                            "fallback": comicImg,
+                            "color": "#36a64f",
+                            "author_name": "Scott Adams - Dilbert.com (September 21, 2016)",
+                            "title": "This is the description to go with the comic.",
+                            "image_url": comicImg
+                        }
+                    ]
+                });
                 return;
             });            
         }

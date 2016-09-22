@@ -9,6 +9,7 @@
     "express": "^4.14.0",
     "file-system": "^2.2.1",
     "moment": "^2.15.0",
+    "node-slack": "0.0.7",
     "random-js": "^1.0.8",
     "request": "^2.74.0",
     "require": "^2.4.20",
