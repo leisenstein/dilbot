@@ -81,9 +81,9 @@ app.post('/dilbot', function(req, res) {
                 // res.attachment(comicImg);
                 // res.send(comicImg);
                 slack.send({
-                    text: comicImg,
-                    unfurl_links: true,
-                    unfurl_media: true,
+                    'text': comicImg,
+                    'unfurl_links': true,
+                    'unfurl_media': true,
                     "attachments": [
                         {
                             "fallback": comicImg,
