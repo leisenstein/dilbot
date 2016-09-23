@@ -4,11 +4,9 @@ var fs = require('fs');
 var bodyParser = require('body-parser')
 var request = require('request');
 var cheerio = require('cheerio');
-var moment = require('moment');
 var app = express();
 var services = require('./app/Services');
 var _ = require('underscore');
-var Slack = require('node-slack');
 
 app.use(bodyParser.urlencoded({ extended: false })); 
 
@@ -38,49 +36,35 @@ app.post('/dilbot', function(req, res) {
     console.log("POST TO DILBOT!");
     
     var term = req.body.text;
-    console.log(term);
-    var token = req.body.token;
-    console.log(token);
-    var teamId=req.body.team_id;
-    console.log(teamId);
-    var teamDomain=req.body.team_domain;
-    console.log(teamDomain);
-    var channelId=req.body.channel_id;
-    console.log(channelId);
-    var channelName=req.body.channel_name;
-    console.log(channelName);
-    var userId=req.body.user_id;
-    console.log(userId);
-    var userName=req.body.user_name;
-    console.log(userName);
+    console.log('term: ' + term);
     var command=req.body.command;
-    console.log(command);
+    console.log('command: ' + command);
+    var token = req.body.token;
+    console.log('token: ' + token);
+    var teamId=req.body.team_id;
+    console.log('teamId: ' + teamId);
+    var teamDomain=req.body.team_domain;
+    console.log('teamDomain: ' + teamDomain);
+    var channelId=req.body.channel_id;
+    console.log('channelId: ' + channelId);
+    var channelName=req.body.channel_name;
+    console.log('channelName: ' + channelName);
+    var userId=req.body.user_id;
+    console.log('userId: ' + userId);
+    var userName=req.body.user_name;
+    console.log('userName: ' + userName);
     
     
     console.log('--------------------------------------------------------------------------------------------');
     if(command=="/dilbot") {
         console.log("command==dilbot");
         if(term) {
-            console.log("TERM");
+            console.log("term: " +term);
             services.getRandomByTopic(term, 'fake2.jpg', function(comicImg, todaysComicAlt) {
-                console.log(comicImg);
-                res.send('' + comicImg + '');
-                return;
-            });            
-        } else {
-            console.log("!TERM");
-            var config = {
-                hook: 'https://hooks.slack.com/services/'+token,
-                channel: channelName,
-            };
-            var slack = new Slack(config.hook);
-            
-            services.getToday('fakefile.jpg', function(comicImg, todaysComicAlt) { 
-            
+                // header
                 res.append('Content-type','application/json');
-                //res.attachment(comicImg);
-                //res.send(comicImg);
                 
+                // body
                 var msg = {
                     'text': comicImg,
                     'unfurl_links': true,
@@ -97,8 +81,8 @@ app.post('/dilbot', function(req, res) {
                 };
                 res.send(msg);
                 
-                // SAMPLE
-                // token:V9aolfXvw29w4HnT63T0C0ZA
+                // SAMPLE FOR POSTMAN
+                // token:YOUR_TOKEN
                 // team_id:carelike
                 // team_domain:carelike
                 // channel_id:C2147483705
@@ -109,27 +93,50 @@ app.post('/dilbot', function(req, res) {
                 // text:
                 // response_url:https://hooks.slack.com/commands/1234/5678
 
+                return;
+            });            
+        } else {
+            console.log("!term");
+            
+            services.getToday('fakefile.jpg', function(comicImg, todaysComicAlt) { 
+                // header
+                res.append('Content-type','application/json');
+                
+                // body
+                var msg = {
+                    'text': comicImg,
+                    'unfurl_links': true,
+                    'unfurl_media': true,
+                    "attachments": [
+                        {
+                            "fallback": comicImg,
+                            "color": "#36a64f",
+                            "author_name": "Scott Adams - Dilbert.com (September 21, 2016)",
+                            "title": todaysComicAlt,
+                            "image_url": comicImg
+                        }
+                    ]
+                };
+                res.send(msg);
+                
+                // SAMPLE FOR POSTMAN
+                // token:YOUR_TOKEN
+                // team_id:carelike
+                // team_domain:carelike
+                // channel_id:C2147483705
+                // channel_name:dilbot
+                // user_id:leisenstein
+                // user_name:Larry
+                // command:/dilbot
+                // text:
+                // response_url:https://hooks.slack.com/commands/1234/5678
 
-                // slack.send({
-                    // 'text': comicImg,
-                    // 'unfurl_links': true,
-                    // 'unfurl_media': true,
-                    // "attachments": [
-                        // {
-                            // "fallback": comicImg,
-                            // "color": "#36a64f",
-                            // "author_name": "Scott Adams - Dilbert.com (September 21, 2016)",
-                            // "title": todaysComicAlt,
-                            // "image_url": comicImg
-                        // }
-                    // ]
-                // });
                 return;
             });            
         }
     } else {
-        console.log("!COMMAND");
-        res.send("!COMMAND");
+        console.log("!command");
+        res.send("!command");
         return;
     }
     

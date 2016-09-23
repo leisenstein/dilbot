@@ -1,7 +1,7 @@
 var fs = require('fs');
 var request = require('request');
 var cheerio = require('cheerio');
-var moment = require('moment');
+
 
 
 var Services = { }
@@ -20,8 +20,6 @@ Services.getToday = function(filename, callback) {
         } else {
             $ = cheerio.load(html);
             
-            var wrapped = moment(new Date());
-            var logDate = wrapped.format( "YYYY-MM-DD HH:mm").toString();
             var todaysComicImg = $('img.img-comic').attr('src');
             var todaysComicAlt = $('img.img-comic').attr('alt');
             console.log(todaysComicImg + ' [' + todaysComicAlt +']');
