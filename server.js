@@ -19,16 +19,16 @@ app.get('/', function(req, res) {
 
 app.get('/dilbot', function(req, res) {
     services.getToday('fakefile.jpg'
-                        , function(comicImg) { 
-                            res.send('<img src="' + comicImg + '"/>');
+                        , function(comicImg, todaysComicAlt) { 
+                            res.send('<img src="' + comicImg + '" alt="' + todaysComicAlt + '"/>');
                         });
 });
 
 app.get('/dilbot/:term', function(req, res) {
     console.log('--------------------------------------------------------------------------------------------');
-    services.getRandomByTopic(req.params.term, 'fake2.jpg', function(comicImg) {
+    services.getRandomByTopic(req.params.term, 'fake2.jpg', function(comicImg, todaysComicAlt) {
         console.log(comicImg);
-        res.send('<img src="' + comicImg + '"/>');
+        res.send('<img src="' + comicImg + '" alt="' + todaysComicAlt + '"/>');
     });
 });
 
@@ -62,7 +62,7 @@ app.post('/dilbot', function(req, res) {
         console.log("command==dilbot");
         if(term) {
             console.log("TERM");
-            services.getRandomByTopic(term, 'fake2.jpg', function(comicImg) {
+            services.getRandomByTopic(term, 'fake2.jpg', function(comicImg, todaysComicAlt) {
                 console.log(comicImg);
                 res.send('' + comicImg + '');
                 return;
@@ -75,12 +75,13 @@ app.post('/dilbot', function(req, res) {
             };
             var slack = new Slack(config.hook);
             
-            services.getToday('fakefile.jpg', function(comicImg) { 
+            services.getToday('fakefile.jpg', function(comicImg, todaysComicAlt) { 
             
-                // res.append('Content-type','application/json');
-                // res.attachment(comicImg);
-                // res.send(comicImg);
-                slack.send({
+                res.append('Content-type','application/json');
+                //res.attachment(comicImg);
+                //res.send(comicImg);
+                
+                var msg = {
                     'text': comicImg,
                     'unfurl_links': true,
                     'unfurl_media': true,
@@ -89,11 +90,40 @@ app.post('/dilbot', function(req, res) {
                             "fallback": comicImg,
                             "color": "#36a64f",
                             "author_name": "Scott Adams - Dilbert.com (September 21, 2016)",
-                            "title": "This is the description to go with the comic.",
+                            "title": todaysComicAlt,
                             "image_url": comicImg
                         }
                     ]
-                });
+                };
+                res.send(msg);
+                
+                // SAMPLE
+                // token:V9aolfXvw29w4HnT63T0C0ZA
+                // team_id:carelike
+                // team_domain:carelike
+                // channel_id:C2147483705
+                // channel_name:dilbot
+                // user_id:leisenstein
+                // user_name:Larry
+                // command:/dilbot
+                // text:
+                // response_url:https://hooks.slack.com/commands/1234/5678
+
+
+                // slack.send({
+                    // 'text': comicImg,
+                    // 'unfurl_links': true,
+                    // 'unfurl_media': true,
+                    // "attachments": [
+                        // {
+                            // "fallback": comicImg,
+                            // "color": "#36a64f",
+                            // "author_name": "Scott Adams - Dilbert.com (September 21, 2016)",
+                            // "title": todaysComicAlt,
+                            // "image_url": comicImg
+                        // }
+                    // ]
+                // });
                 return;
             });            
         }

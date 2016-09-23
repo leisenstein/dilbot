@@ -24,8 +24,8 @@ Services.getToday = function(filename, callback) {
             var logDate = wrapped.format( "YYYY-MM-DD HH:mm").toString();
             var todaysComicImg = $('img.img-comic').attr('src');
             var todaysComicAlt = $('img.img-comic').attr('alt');
-            console.log(logDate + ' : ' + todaysComicImg + ' [' + todaysComicAlt +']');
-            callback(todaysComicImg);
+            console.log(todaysComicImg + ' [' + todaysComicAlt +']');
+            callback(todaysComicImg, todaysComicAlt);
         }
     });
 }; // getToday function
@@ -47,7 +47,7 @@ Services.getRandomByTopic = function(term, filename, callback) {
            // MUST account for No Results
            var noResults = $('div.no-results').length > 0
            if(noResults) {
-               callback('http://funny-pictures.funmunch.com/pictures/Soccer-Fail-2.jpg');
+               callback('http://funny-pictures.funmunch.com/pictures/Soccer-Fail-2.jpg', 'None');
                return;
            }
                
@@ -76,7 +76,7 @@ Services.getRandomByTopic = function(term, filename, callback) {
                    var imgRandomComic = $('div.img-comic-container img.img-comic')[random-1];
                    var todaysComicImg = $('img.img-comic').attr('src');
                    var todaysComicAlt = $('img.img-comic').attr('alt');
-                   callback(todaysComicImg);
+                   callback(todaysComicImg, todaysComicAlt);
                }
            
            });
