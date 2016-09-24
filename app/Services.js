@@ -20,10 +20,15 @@ Services.getToday = function(filename, callback) {
         } else {
             $ = cheerio.load(html);
             
-            var todaysComicImg = $('img.img-comic').attr('src');
-            var todaysComicAlt = $('img.img-comic').attr('alt');
-            console.log(todaysComicImg + ' [' + todaysComicAlt +']');
-            callback(todaysComicImg, todaysComicAlt);
+            var MainComicDiv = $('div.meta-info-container .comic-item')[0];
+            
+            var todaysComicImg = $('img.img-comic, MainComicDiv').attr('src');
+            var todaysComicAlt = $('img.img-comic', MainComicDiv).attr('alt');
+            var todaysComicDate1 = $('.comic-title-date span', MainComicDiv)[0];
+            var todaysComicDate2 = $('.comic-title-date span', MainComicDiv)[1];
+            var todaysComicDate = todaysComicDate1.children[0].data + ' ' + todaysComicDate2.children[0].data;
+            console.log(todaysComicImg + ' [' + todaysComicAlt +']' + ' (' + todaysComicDate + ')');
+            callback(todaysComicImg, todaysComicAlt, todaysComicDate);
         }
     });
 }; // getToday function
@@ -45,7 +50,7 @@ Services.getRandomByTopic = function(term, filename, callback) {
            // MUST account for No Results
            var noResults = $('div.no-results').length > 0
            if(noResults) {
-               callback('http://funny-pictures.funmunch.com/pictures/Soccer-Fail-2.jpg', 'None');
+               callback('http://funny-pictures.funmunch.com/pictures/Soccer-Fail-2.jpg', 'None', 'None');
                return;
            }
                
@@ -63,18 +68,29 @@ Services.getRandomByTopic = function(term, filename, callback) {
                    console.log(err);
                } else {
                    $ = cheerio.load(body);
-                   var firstOnRandomPage = $('img.img-comic').attr('src');
-                   
                    var numberOfComics = $('div.img-comic-container').length;
                    
                    
                    random = require("random-js")();
                    var randomComic = random.integer(1, numberOfComics);
                    console.log('Picked Comic #: ' + randomComic + ' of ' + numberOfComics + '!');
-                   var imgRandomComic = $('div.img-comic-container img.img-comic')[random-1];
-                   var todaysComicImg = $('img.img-comic').attr('src');
-                   var todaysComicAlt = $('img.img-comic').attr('alt');
-                   callback(todaysComicImg, todaysComicAlt);
+                   
+                   
+                   
+                   var MainComicDiv = $('div.meta-info-container .comic-item')[random-1];
+                   
+                   
+                   
+                   // var imgRandomComic = $('div.img-comic-container img.img-comic')[random-1];
+                   var todaysComicImg = $('img.img-comic', MainComicDiv).attr('src');
+                   var todaysComicAlt = $('img.img-comic', MainComicDiv).attr('alt');
+                   
+                   
+                   var todaysComicDate1 = $('.comic-title-date span', MainComicDiv)[0];
+                   var todaysComicDate2 = $('.comic-title-date span', MainComicDiv)[1];
+                   var todaysComicDate = todaysComicDate1.children[0].data + ' ' + todaysComicDate2.children[0].data;
+                   console.log(todaysComicImg + ' [' + todaysComicAlt +']' + ' (' + todaysComicDate + ')');
+                   callback(todaysComicImg, todaysComicAlt, todaysComicDate);
                }
            
            });

@@ -17,14 +17,14 @@ app.get('/', function(req, res) {
 
 app.get('/dilbot', function(req, res) {
     services.getToday('fakefile.jpg'
-                        , function(comicImg, todaysComicAlt) { 
+                        , function(comicImg, todaysComicAlt, comicDate) { 
                             res.send('<img src="' + comicImg + '" alt="' + todaysComicAlt + '"/>');
                         });
 });
 
 app.get('/dilbot/:term', function(req, res) {
     console.log('--------------------------------------------------------------------------------------------');
-    services.getRandomByTopic(req.params.term, 'fake2.jpg', function(comicImg, todaysComicAlt) {
+    services.getRandomByTopic(req.params.term, 'fake2.jpg', function(comicImg, todaysComicAlt, comicDate) {
         console.log(comicImg);
         res.send('<img src="' + comicImg + '" alt="' + todaysComicAlt + '"/>');
     });
@@ -60,7 +60,7 @@ app.post('/dilbot', function(req, res) {
         console.log("command==dilbot");
         if(term) {
             console.log("term: " +term);
-            services.getRandomByTopic(term, 'fake2.jpg', function(comicImg, todaysComicAlt) {
+            services.getRandomByTopic(term, 'fake2.jpg', function(comicImg, todaysComicAlt, comicDate) {
                 // header
                 res.append('Content-type','application/json');
                 
@@ -73,7 +73,7 @@ app.post('/dilbot', function(req, res) {
                         {
                             "fallback": comicImg,
                             "color": "#36a64f",
-                            "author_name": "Scott Adams - Dilbert.com (September 21, 2016)",
+                            "author_name": "Scott Adams - \u00A9Dilbert.com (" + comicDate + ")",
                             "title": todaysComicAlt,
                             "image_url": comicImg
                         }
@@ -98,7 +98,7 @@ app.post('/dilbot', function(req, res) {
         } else {
             console.log("!term");
             
-            services.getToday('fakefile.jpg', function(comicImg, todaysComicAlt) { 
+            services.getToday('fakefile.jpg', function(comicImg, todaysComicAlt, comicDate) { 
                 // header
                 res.append('Content-type','application/json');
                 
@@ -111,7 +111,7 @@ app.post('/dilbot', function(req, res) {
                         {
                             "fallback": comicImg,
                             "color": "#36a64f",
-                            "author_name": "Scott Adams - Dilbert.com (September 21, 2016)",
+                            "author_name": "Scott Adams - Dilbert.com (" + comicDate + ")",
                             "title": todaysComicAlt,
                             "image_url": comicImg
                         }
