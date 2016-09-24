@@ -33,8 +33,6 @@ app.get('/dilbot/:term', function(req, res) {
 
 app.post('/dilbot', function(req, res) {
     // parameters from Slack
-    console.log("POST TO DILBOT!");
-    
     var term = req.body.text;
     console.log('term: ' + term);
     var command=req.body.command;
@@ -111,26 +109,13 @@ app.post('/dilbot', function(req, res) {
                         {
                             "fallback": comicImg,
                             "color": "#36a64f",
-                            "author_name": "Scott Adams - Dilbert.com (" + comicDate + ")",
+                            "author_name": "Scott Adams - \u00A9Dilbert.com (" + comicDate + ")",
                             "title": todaysComicAlt,
                             "image_url": comicImg
                         }
                     ]
                 };
                 res.send(msg);
-                
-                // SAMPLE FOR POSTMAN
-                // token:YOUR_TOKEN
-                // team_id:carelike
-                // team_domain:carelike
-                // channel_id:C2147483705
-                // channel_name:dilbot
-                // user_id:leisenstein
-                // user_name:Larry
-                // command:/dilbot
-                // text:
-                // response_url:https://hooks.slack.com/commands/1234/5678
-
                 return;
             });            
         }

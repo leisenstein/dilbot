@@ -1,15 +1,11 @@
 var fs = require('fs');
 var request = require('request');
 var cheerio = require('cheerio');
-
-
-
 var Services = { }
 Services.BaseDilbertURL = 'http://dilbert.com/';
 Services.BaseDilbertSearchURL = 'http://dilbert.com/search_results?terms=';
 
 
-/////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////
 Services.getToday = function(filename, callback) {
     console.log("Inside::: Services.getToday");
@@ -34,7 +30,6 @@ Services.getToday = function(filename, callback) {
 }; // getToday function
 
 
-/////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////
 Services.getRandomByTopic = function(term, filename, callback) {
     console.log("Inside::: Services.getRandomByTopic");
@@ -69,23 +64,15 @@ Services.getRandomByTopic = function(term, filename, callback) {
                } else {
                    $ = cheerio.load(body);
                    var numberOfComics = $('div.img-comic-container').length;
-                   
-                   
+
                    random = require("random-js")();
                    var randomComic = random.integer(1, numberOfComics);
                    console.log('Picked Comic #: ' + randomComic + ' of ' + numberOfComics + '!');
-                   
-                   
-                   
+
                    var MainComicDiv = $('div.meta-info-container .comic-item')[random-1];
-                   
-                   
-                   
-                   // var imgRandomComic = $('div.img-comic-container img.img-comic')[random-1];
                    var todaysComicImg = $('img.img-comic', MainComicDiv).attr('src');
                    var todaysComicAlt = $('img.img-comic', MainComicDiv).attr('alt');
-                   
-                   
+ 
                    var todaysComicDate1 = $('.comic-title-date span', MainComicDiv)[0];
                    var todaysComicDate2 = $('.comic-title-date span', MainComicDiv)[1];
                    var todaysComicDate = todaysComicDate1.children[0].data + ' ' + todaysComicDate2.children[0].data;
@@ -94,27 +81,9 @@ Services.getRandomByTopic = function(term, filename, callback) {
                }
            
            });
-           
-           
-           // get the # of comics
-           
-           
-           // pick a random comic
-           
-           
-           // get the url of the random comic
+
        }
     });
 }; // getRandomByTopic function
-//////////////////////////////////
-///////// TEST ///////////////////
-//////////////////////////////////
-// GET nTH comic on page
-Services.getComicFromHtml = function(html, n) {
-    $ = cheerio.load(html);
-    
-}; // getComicFromHtml function
-//////////////////////////////////
-///////// TEST ///////////////////
-//////////////////////////////////
+
 module.exports = Services;
