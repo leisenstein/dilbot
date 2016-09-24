@@ -83,7 +83,24 @@ app.post('/dilbot', function(req, res) {
             if(is8DigitDate) {
                 console.log("is8DigitDate");
                 services.getComicByDate(param, function(comicImg, todaysComicAlt, comicDate) { 
-                    res.send('<img src="' + comicImg + '" alt="' + todaysComicAlt + '"/>');
+                    res.append('Content-type','application/json');
+                    
+                    // body
+                    var msg = {
+                        'text': comicImg,
+                        'unfurl_links': true,
+                        'unfurl_media': true,
+                        "attachments": [
+                            {
+                                "fallback": comicImg,
+                                "color": "#36a64f",
+                                "author_name": "Scott Adams - \u00A9Dilbert.com (" + comicDate + ")",
+                                "title": todaysComicAlt,
+                                "image_url": comicImg
+                            }
+                        ]
+                    };
+                    res.send(msg);
                 });
                 
             } else {
