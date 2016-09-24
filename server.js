@@ -16,25 +16,43 @@ app.get('/', function(req, res) {
 });
 
 app.get('/dilbot', function(req, res) {
-    services.getToday('fakefile.jpg'
-                        , function(comicImg, todaysComicAlt, comicDate) { 
+    var today = new Date().toJSON().slice(0,10).replace(/-/gi, "");
+    services.getComicByDate(today, function(comicImg, todaysComicAlt, comicDate) { 
                             res.send('<img src="' + comicImg + '" alt="' + todaysComicAlt + '"/>');
                         });
 });
 
 app.get('/dilbot/:term', function(req, res) {
     console.log('--------------------------------------------------------------------------------------------');
-    services.getRandomByTopic(req.params.term, 'fake2.jpg', function(comicImg, todaysComicAlt, comicDate) {
-        console.log(comicImg);
-        res.send('<img src="' + comicImg + '" alt="' + todaysComicAlt + '"/>');
-    });
+    var param = req.params.term;
+    console.log(param);
+    var dateRegex = new RegExp('\\d{8}');
+    var is8DigitDate = dateRegex.test(param);
+
+    if(is8DigitDate) {
+        console.log("is8DigitDate");
+        services.getComicByDate(param, function(comicImg, todaysComicAlt, comicDate) { 
+            res.send('<img src="' + comicImg + '" alt="' + todaysComicAlt + '"/>');
+        });
+    } else {
+        console.log("!is8DigitDate");
+        services.getRandomByTopic(param, function(comicImg, todaysComicAlt, comicDate) {
+            console.log(comicImg);
+            res.send('<img src="' + comicImg + '" alt="' + todaysComicAlt + '"/>');
+        }); 
+    }
+    
 });
 
-
+//////////// POST is for Slack command ///////////////////////////
+// if just /dilbot, return today's comicDate
+// if term is passed and its an 8 digit #, its a date, so get that date's comicDate
+// if term is passed and its not 8 digit #, just search the term and return random comicDate
+/////////////////////////////////////////////////////////////////
 app.post('/dilbot', function(req, res) {
     // parameters from Slack
-    var term = req.body.text;
-    console.log('term: ' + term);
+    var param = req.body.text;
+    console.log('param: ' + param);
     var command=req.body.command;
     console.log('command: ' + command);
     var token = req.body.token;
@@ -49,54 +67,68 @@ app.post('/dilbot', function(req, res) {
     console.log('channelName: ' + channelName);
     var userId=req.body.user_id;
     console.log('userId: ' + userId);
-    var userName=req.body.user_name;
+    var userName=req.body.termuser_name;
     console.log('userName: ' + userName);
     
     
     console.log('--------------------------------------------------------------------------------------------');
     if(command=="/dilbot") {
         console.log("command==dilbot");
-        if(term) {
-            console.log("term: " +term);
-            services.getRandomByTopic(term, 'fake2.jpg', function(comicImg, todaysComicAlt, comicDate) {
-                // header
-                res.append('Content-type','application/json');
-                
-                // body
-                var msg = {
-                    'text': comicImg,
-                    'unfurl_links': true,
-                    'unfurl_media': true,
-                    "attachments": [
-                        {
-                            "fallback": comicImg,
-                            "color": "#36a64f",
-                            "author_name": "Scott Adams - \u00A9Dilbert.com (" + comicDate + ")",
-                            "title": todaysComicAlt,
-                            "image_url": comicImg
-                        }
-                    ]
-                };
-                res.send(msg);
-                
-                // SAMPLE FOR POSTMAN
-                // token:YOUR_TOKEN
-                // team_id:carelike
-                // team_domain:carelike
-                // channel_id:C2147483705
-                // channel_name:dilbot
-                // user_id:leisenstein
-                // user_name:Larry
-                // command:/dilbot
-                // text:
-                // response_url:https://hooks.slack.com/commands/1234/5678
-
-                return;
-            });            
-        } else {
-            console.log("!term");
+        if(param) {
+            console.log("param: " +param);
             
-            services.getToday('fakefile.jpg', function(comicImg, todaysComicAlt, comicDate) { 
+            var dateRegex = new RegExp('\\d{8}');
+            var is8DigitDate = dateRegex.test(param);
+            
+            if(is8DigitDate) {
+                console.log("is8DigitDate");
+                services.getComicByDate(param, function(comicImg, todaysComicAlt, comicDate) { 
+                    res.send('<img src="' + comicImg + '" alt="' + todaysComicAlt + '"/>');
+                });
+                
+            } else {
+                services.getRandomByTopic(param, function(comicImg, todaysComicAlt, comicDate) {
+                    // header
+                    res.append('Content-type','application/json');
+                    
+                    // body
+                    var msg = {
+                        'text': comicImg,
+                        'unfurl_links': true,
+                        'unfurl_media': true,
+                        "attachments": [
+                            {
+                                "fallback": comicImg,
+                                "color": "#36a64f",
+                                "author_name": "Scott Adams - \u00A9Dilbert.com (" + comicDate + ")",
+                                "title": todaysComicAlt,
+                                "image_url": comicImg
+                            }
+                        ]
+                    };
+                    res.send(msg);
+                    
+                    // SAMPLE FOR POSTMAN
+                    // token:YOUR_TOKEN
+                    // team_id:carelike
+                    // team_domain:carelike
+                    // channel_id:C2147483705
+                    // channel_name:dilbot
+                    // user_id:leisenstein
+                    // user_name:Larry
+                    // command:/dilbot
+                    // text:
+                    // response_url:https://hooks.slack.com/commands/1234/5678
+
+                    return;
+                });            
+            }
+            
+            
+        } else {
+            console.log("!param");
+            var today = new Date().toJSON().slice(0,10).replace(/-/gi, "");
+            services.getComicByDate(today, function(comicImg, todaysComicAlt, comicDate) { 
                 // header
                 res.append('Content-type','application/json');
                 

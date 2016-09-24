@@ -4,14 +4,20 @@ var cheerio = require('cheerio');
 var Services = { }
 Services.BaseDilbertURL = 'http://dilbert.com/';
 Services.BaseDilbertSearchURL = 'http://dilbert.com/search_results?terms=';
+Services.BaseDilbertDateSearch = 'http://dilbert.com/strip/';
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-Services.getToday = function(filename, callback) {
-    console.log("Inside::: Services.getToday");
-    request(Services.BaseDilbertURL, function(error, response, html) {
+Services.getComicByDate = function(dateParam, callback) {
+    var DilbertUrl = '';
+    if(dateParam===undefined)
+        DilbertUrl = Services.BaseDilbertURL;
+    else 
+        DilbertUrl = Services.BaseDilbertDateSearch + '/' + dateParam;
+    
+    request(DilbertUrl, function(error, response, html) {
         if(error) {
-            console.log("There is an ERROR in the request (getToday)!");
+            console.log("There is an ERROR in the request (getComicByDate)!");
             console.log(error);
         } else {
             $ = cheerio.load(html);
@@ -27,12 +33,12 @@ Services.getToday = function(filename, callback) {
             callback(todaysComicImg, todaysComicAlt, todaysComicDate);
         }
     });
-}; // getToday function
+}; // getComicByDate function
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-Services.getRandomByTopic = function(term, filename, callback) {
-    console.log("Inside::: Services.getRandomByTopic");
+Services.getRandomByTopic = function(term, callback) {
+
     var searchUrl = `${Services.BaseDilbertSearchURL}${term}`;
     console.log(searchUrl);
     request(searchUrl, function(error, response, html) {
