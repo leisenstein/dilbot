@@ -22,8 +22,12 @@ Stack
 > - Request
 
 Slack Command
-================================
+----
 
-/dilbot - Brings back today's Dilber comic
-/dilbot [term] - Searches Dilbert.com and brings back random comic.  Fail images if nothing is found.
+```
+/dilbot - Brings back today's Dilber comic 
+
+/dilbot [term] - Searches Dilbert.com and brings back random comic. Fail images if nothing is found. 
+
 /dilbot [YYYYMMDD] - Brings back comic for that day from Dilbert.com
+```
