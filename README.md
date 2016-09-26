@@ -2,7 +2,7 @@ Welcome to Dilbot for Slack
 ===================
 
 
-This is a web service that interacts with Slack to pull Dilbery comics from the website of Scott Adams (http://www.dilbert.com).  
+This is a web service that interacts with Slack to pull Dilbert comics from the website of Scott Adams (http://www.dilbert.com).  
 This is purely a fan site and all copyrights belong to Scott Adams.  
 I am a huge an and if he asks me to take this down, I will oblige promptly (although regretfully)! 
 
@@ -20,6 +20,7 @@ Stack
 > - Express
 > - Cheerio
 > - Request
+
 
 Slack Command
 ----
