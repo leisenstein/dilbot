@@ -32,3 +32,8 @@ Slack Command
 
 /dilbot [YYYYMMDD] - Brings back comic for that day from Dilbert.com
 ```
+
+Hosting 
+----------------
+You can host this for free on Heroku, but the free account goes to sleep after 30 minutes.  
+This will cause your next request to timeout.
